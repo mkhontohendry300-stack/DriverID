@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type DocumentStatus = "valid" | "expiring" | "expired";
+type DocumentStatus = "valid" | "expiring" | "expired" | "pending" | "rejected";
 
 interface StatusBadgeProps {
   status: DocumentStatus;
@@ -11,6 +11,8 @@ const statusConfig: Record<DocumentStatus, { label: string; className: string }>
   valid: { label: "Valid", className: "status-valid" },
   expiring: { label: "Expiring Soon", className: "status-expiring" },
   expired: { label: "Expired", className: "status-expired" },
+  pending: { label: "Pending", className: "bg-accent/20 text-accent" },
+  rejected: { label: "Rejected", className: "status-expired" },
 };
 
 const StatusBadge = ({ status, className }: StatusBadgeProps) => {
@@ -26,6 +28,8 @@ const StatusBadge = ({ status, className }: StatusBadgeProps) => {
       {status === "valid" && "✓"}
       {status === "expiring" && "⚠"}
       {status === "expired" && "✕"}
+      {status === "pending" && "⏳"}
+      {status === "rejected" && "✕"}
       {" " + config.label}
     </span>
   );

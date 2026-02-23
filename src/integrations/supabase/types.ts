@@ -14,7 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      documents: {
+        Row: {
+          created_at: string
+          expiry_date: string | null
+          file_url: string | null
+          id: string
+          name: string
+          notes: string | null
+          status: string
+          type: string
+          updated_at: string
+          uploaded_at: string
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          expiry_date?: string | null
+          file_url?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          status?: string
+          type: string
+          updated_at?: string
+          uploaded_at?: string
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          expiry_date?: string | null
+          file_url?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          status?: string
+          type?: string
+          updated_at?: string
+          uploaded_at?: string
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          id_number: string | null
+          phone: string | null
+          photo_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          id_number?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          id_number?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -62,7 +62,7 @@ const Index = () => {
       >
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/auth")}
           className="w-full py-4 rounded-2xl card-gradient text-primary-foreground font-semibold text-base flex items-center justify-center gap-2 shadow-lg"
         >
           Get Started

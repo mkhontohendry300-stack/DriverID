@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -14,6 +15,8 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const menuSections = [
   {
@@ -43,6 +46,26 @@ const menuSections = [
 
 const Settings = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [profile, setProfile] = useState<{ full_name: string; email: string; id_number: string } | null>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { navigate("/auth"); return; }
+      const { data } = await supabase.from("profiles").select("*").eq("user_id", user.id).single();
+      if (data) setProfile({ full_name: data.full_name, email: data.email || "", id_number: data.id_number || "" });
+    };
+    fetchProfile();
+  }, [navigate]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast({ title: "Signed out successfully" });
+    navigate("/auth");
+  };
+
+  const initials = profile?.full_name ? profile.full_name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "?";
 
   return (
     <AppLayout>
@@ -61,12 +84,12 @@ const Settings = () => {
           className="bg-card rounded-2xl p-4 mb-6 shadow-sm border border-border flex items-center gap-4"
         >
           <div className="w-14 h-14 rounded-full card-gradient flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-lg">TM</span>
+            <span className="text-primary-foreground font-bold text-lg">{initials}</span>
           </div>
           <div className="flex-1">
-            <h2 className="font-bold text-foreground">Thabo Mokoena</h2>
-            <p className="text-xs text-muted-foreground">thabo.mokoena@email.com</p>
-            <p className="text-xs text-muted-foreground font-mono">ID: 9204115608083</p>
+            <h2 className="font-bold text-foreground">{profile?.full_name || "Loading..."}</h2>
+            <p className="text-xs text-muted-foreground">{profile?.email}</p>
+            {profile?.id_number && <p className="text-xs text-muted-foreground font-mono">ID: {profile.id_number}</p>}
           </div>
           <ChevronRight size={16} className="text-muted-foreground" />
         </motion.div>
@@ -108,6 +131,7 @@ const Settings = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
+          onClick={handleSignOut}
           className="w-full flex items-center justify-center gap-2 py-3 text-destructive text-sm font-semibold"
         >
           <LogOut size={16} />
