@@ -67,7 +67,7 @@ const Documents = () => {
 
   return (
     <AppLayout>
-      <div className="px-5 pt-12 pb-4">
+      <div className="px-5 pt-14 pb-4">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <button onClick={() => navigate("/dashboard")} className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">

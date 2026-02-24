@@ -12,6 +12,9 @@ import Documents from "./pages/Documents";
 import Vehicles from "./pages/Vehicles";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
+import PersonalInfo from "./pages/PersonalInfo";
+import SecuritySettings from "./pages/SecuritySettings";
+import NotificationPreferences from "./pages/NotificationPreferences";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +35,9 @@ const App = () => (
           <Route path="/vehicles" element={<Vehicles />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/settings/personal-info" element={<PersonalInfo />} />
+          <Route path="/settings/security" element={<SecuritySettings />} />
+          <Route path="/settings/notifications" element={<NotificationPreferences />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
