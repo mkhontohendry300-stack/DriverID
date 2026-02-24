@@ -154,7 +154,7 @@ const Documents = () => {
 
       <AnimatePresence>
         {selectedDoc && (
-          <DocumentDetailSheet document={selectedDoc} onClose={() => setSelectedDoc(null)} />
+          <DocumentDetailSheet document={selectedDoc} onClose={() => setSelectedDoc(null)} onDeleted={fetchDocuments} />
         )}
       </AnimatePresence>
 

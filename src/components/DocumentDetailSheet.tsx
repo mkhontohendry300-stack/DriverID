@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { X, FileText, ShieldCheck, Car, AlertTriangle, Clock, CheckCircle, XCircle } from "lucide-react";
+import { X, FileText, ShieldCheck, Car, AlertTriangle, Clock, CheckCircle, XCircle, Trash2 } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 import type { DocumentStatus } from "./StatusBadge";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface DocumentDetailProps {
   document: {
@@ -13,6 +16,7 @@ interface DocumentDetailProps {
     uploaded: string;
   } | null;
   onClose: () => void;
+  onDeleted?: () => void;
 }
 
 const iconMap: Record<string, typeof FileText> = {
@@ -23,11 +27,35 @@ const iconMap: Record<string, typeof FileText> = {
   roadworthy: AlertTriangle,
 };
 
-const DocumentDetailSheet = ({ document, onClose }: DocumentDetailProps) => {
+const DocumentDetailSheet = ({ document, onClose, onDeleted }: DocumentDetailProps) => {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const { toast } = useToast();
+
   if (!document) return null;
 
   const Icon = iconMap[document.type] || FileText;
   const isPending = document.status === "pending";
+
+  const handleDelete = async () => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      return;
+    }
+    setDeleting(true);
+    try {
+      const { error } = await supabase.from("documents").delete().eq("id", document.id);
+      if (error) throw error;
+      toast({ title: "Document deleted" });
+      onDeleted?.();
+      onClose();
+    } catch (err: any) {
+      toast({ title: "Delete failed", description: err.message, variant: "destructive" });
+    } finally {
+      setDeleting(false);
+      setConfirmDelete(false);
+    }
+  };
 
   return (
     <motion.div
@@ -118,6 +146,20 @@ const DocumentDetailSheet = ({ document, onClose }: DocumentDetailProps) => {
               </div>
             </div>
           )}
+
+          {/* Delete Button */}
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-colors ${
+              confirmDelete
+                ? "bg-destructive text-destructive-foreground"
+                : "bg-destructive/10 text-destructive border border-destructive/20"
+            }`}
+          >
+            <Trash2 size={16} />
+            {deleting ? "Deleting..." : confirmDelete ? "Tap again to confirm" : "Delete Document"}
+          </button>
         </div>
       </motion.div>
     </motion.div>

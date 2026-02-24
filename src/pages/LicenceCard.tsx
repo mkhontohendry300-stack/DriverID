@@ -1,11 +1,26 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, RotateCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import DigitalCard from "@/components/DigitalCard";
 import AppLayout from "@/components/AppLayout";
+import { supabase } from "@/integrations/supabase/client";
+import mockLicenceFront from "@/assets/mock-licence-front.png";
+import mockPersonPhoto from "@/assets/mock-person-photo.jpg";
 
 const LicenceCard = () => {
   const navigate = useNavigate();
+  const [profileName, setProfileName] = useState("Loading...");
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase.from("profiles").select("full_name").eq("user_id", user.id).single();
+      if (data) setProfileName(data.full_name.toUpperCase());
+    };
+    fetchProfile();
+  }, []);
 
   return (
     <AppLayout>
@@ -24,6 +39,7 @@ const LicenceCard = () => {
           <h1 className="text-lg font-bold text-foreground">Digital Cards</h1>
         </motion.div>
 
+        {/* Mock Licence Front */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -31,19 +47,36 @@ const LicenceCard = () => {
           className="mb-6"
         >
           <p className="text-xs text-muted-foreground font-medium mb-2 uppercase tracking-wider">
-            Driver's Licence
+            Driver's Licence (Front)
+          </p>
+          <div className="rounded-2xl overflow-hidden shadow-xl border border-border">
+            <img src={mockLicenceFront} alt="Driver's Licence Front" className="w-full object-cover" />
+          </div>
+        </motion.div>
+
+        {/* Digital Licence Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.15 }}
+          className="mb-6"
+        >
+          <p className="text-xs text-muted-foreground font-medium mb-2 uppercase tracking-wider">
+            Digital Driver's Licence
           </p>
           <DigitalCard
             type="licence"
-            name="THABO MOKOENA"
+            name={profileName}
             number="MK 9204 1156 08 3"
             category="B, EB"
             issueDate="15/03/2022"
             expiryDate="15/03/2027"
+            photo={mockPersonPhoto}
             status="valid"
           />
         </motion.div>
 
+        {/* Digital ID Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -51,14 +84,15 @@ const LicenceCard = () => {
           className="mb-8"
         >
           <p className="text-xs text-muted-foreground font-medium mb-2 uppercase tracking-wider">
-            Identity Document
+            Digital Identity Document
           </p>
           <DigitalCard
             type="id"
-            name="THABO MOKOENA"
+            name={profileName}
             number="9204115608083"
             issueDate="20/06/2020"
             expiryDate="20/06/2030"
+            photo={mockPersonPhoto}
             status="valid"
           />
         </motion.div>

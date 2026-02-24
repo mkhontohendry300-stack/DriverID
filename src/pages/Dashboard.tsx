@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,6 +15,8 @@ import AppLayout from "@/components/AppLayout";
 import DigitalCard from "@/components/DigitalCard";
 import StatusBadge from "@/components/StatusBadge";
 import type { DocumentStatus } from "@/components/StatusBadge";
+import { supabase } from "@/integrations/supabase/client";
+import mockPersonPhoto from "@/assets/mock-person-photo.jpg";
 
 const mockDocuments: {
   name: string;
@@ -46,6 +49,17 @@ const item = {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [profileName, setProfileName] = useState("Loading...");
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase.from("profiles").select("full_name").eq("user_id", user.id).single();
+      if (data) setProfileName(data.full_name);
+    };
+    fetchProfile();
+  }, []);
 
   return (
     <AppLayout>
@@ -58,7 +72,7 @@ const Dashboard = () => {
         >
           <div>
             <p className="text-sm text-muted-foreground">Welcome back,</p>
-            <h1 className="text-2xl font-bold text-foreground">Thabo Mokoena</h1>
+            <h1 className="text-2xl font-bold text-foreground">{profileName}</h1>
           </div>
           <motion.button
             whileTap={{ scale: 0.9 }}
@@ -78,11 +92,12 @@ const Dashboard = () => {
         >
           <DigitalCard
             type="licence"
-            name="THABO MOKOENA"
+            name={profileName.toUpperCase()}
             number="MK 9204 1156 08 3"
             category="B, EB"
             issueDate="15/03/2022"
             expiryDate="15/03/2027"
+            photo={mockPersonPhoto}
             status="valid"
             onClick={() => navigate("/licence-card")}
           />
