@@ -22,24 +22,24 @@ const menuSections = [
   {
     title: "Account",
     items: [
-      { icon: User, label: "Personal Information", desc: "Name, email, phone" },
-      { icon: Lock, label: "Security", desc: "MFA, biometrics, password" },
-      { icon: Bell, label: "Notification Preferences", desc: "Push, email, SMS alerts" },
+      { icon: User, label: "Personal Information", desc: "Name, email, phone", to: "/settings/personal-info" },
+      { icon: Lock, label: "Security", desc: "MFA, biometrics, password", to: "/settings/security" },
+      { icon: Bell, label: "Notification Preferences", desc: "Push, email, SMS alerts", to: "/settings/notifications" },
     ],
   },
   {
     title: "Preferences",
     items: [
-      { icon: Globe, label: "Language", desc: "English" },
+      { icon: Globe, label: "Language", desc: "English", to: "" },
     ],
   },
   {
     title: "Support",
     items: [
-      { icon: HelpCircle, label: "Help & FAQ", desc: "Common questions answered" },
-      { icon: MessageSquare, label: "Report a Problem", desc: "Let us know about an issue" },
-      { icon: FileText, label: "Privacy Policy", desc: "POPIA & GDPR compliance" },
-      { icon: Shield, label: "Terms of Service", desc: "Usage terms and conditions" },
+      { icon: HelpCircle, label: "Help & FAQ", desc: "Common questions answered", to: "" },
+      { icon: MessageSquare, label: "Report a Problem", desc: "Let us know about an issue", to: "" },
+      { icon: FileText, label: "Privacy Policy", desc: "POPIA & GDPR compliance", to: "" },
+      { icon: Shield, label: "Terms of Service", desc: "Usage terms and conditions", to: "" },
     ],
   },
 ];
@@ -69,7 +69,7 @@ const Settings = () => {
 
   return (
     <AppLayout>
-      <div className="px-5 pt-12 pb-4">
+      <div className="px-5 pt-14 pb-4">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
           <button onClick={() => navigate("/dashboard")} className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
             <ArrowLeft size={18} className="text-foreground" />
@@ -110,6 +110,7 @@ const Settings = () => {
               {section.items.map((menuItem) => (
                 <button
                   key={menuItem.label}
+                  onClick={() => menuItem.to && navigate(menuItem.to)}
                   className="w-full flex items-center gap-3 p-3.5 text-left"
                 >
                   <div className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
