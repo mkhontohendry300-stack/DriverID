@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, ChevronRight } from "lucide-react";
+import { Shield, ChevronRight, User, UserCog, TrafficCone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
@@ -25,53 +25,45 @@ const Index = () => {
         </p>
       </motion.div>
 
-      {/* Feature Highlights */}
+      {/* Role Selection */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="w-full space-y-3 mb-10"
-      >
-        {[
-          { emoji: "🪪", title: "Digital Licence & ID", desc: "Beautiful card-style display" },
-          { emoji: "📱", title: "QR Code Verification", desc: "Instant secure verification" },
-          { emoji: "🔔", title: "Smart Alerts", desc: "Never miss an expiry date" },
-        ].map((f, i) => (
-          <motion.div
-            key={f.title}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 + i * 0.1 }}
-            className="flex items-center gap-4 bg-card rounded-xl p-4 border border-border"
-          >
-            <span className="text-2xl">{f.emoji}</span>
-            <div>
-              <p className="text-sm font-semibold text-foreground">{f.title}</p>
-              <p className="text-xs text-muted-foreground">{f.desc}</p>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="w-full space-y-3"
+        className="w-full space-y-4"
       >
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={() => navigate("/auth")}
-          className="w-full py-4 rounded-2xl card-gradient text-primary-foreground font-semibold text-base flex items-center justify-center gap-2 shadow-lg"
+          onClick={() => navigate("/auth?role=driver")}
+          className="w-full py-4 rounded-2xl bg-card border border-border text-foreground font-semibold text-base flex items-center justify-center gap-3 shadow-sm"
         >
-          Get Started
-          <ChevronRight size={18} />
+          <User size={20} />
+          Driver Portal
+          <ChevronRight size={18} className="ml-auto" />
         </motion.button>
-        <p className="text-center text-[10px] text-muted-foreground">
-          By continuing, you agree to our Privacy Policy & Terms of Service
-        </p>
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={() => navigate("/auth?role=officer")}
+          className="w-full py-4 rounded-2xl bg-card border border-border text-foreground font-semibold text-base flex items-center justify-center gap-3 shadow-sm"
+        >
+          <TrafficCone size={20} />
+          Traffic Officer Portal
+          <ChevronRight size={18} className="ml-auto" />
+        </motion.button>
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={() => navigate("/auth?role=admin")}
+          className="w-full py-4 rounded-2xl bg-card border border-border text-foreground font-semibold text-base flex items-center justify-center gap-3 shadow-sm"
+        >
+          <UserCog size={20} />
+          Admin Portal
+          <ChevronRight size={18} className="ml-auto" />
+        </motion.button>
       </motion.div>
+
+      <p className="text-center text-[10px] text-muted-foreground mt-8">
+        By continuing, you agree to our Privacy Policy & Terms of Service
+      </p>
     </div>
   );
 };
