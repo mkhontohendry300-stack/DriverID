@@ -28,12 +28,12 @@ const LicenceCard = () => {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 mb-8"
-        >
+          className="flex items-center gap-3 mb-8">
+
           <button
             onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center"
-          >
+            className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
+
             <ArrowLeft size={18} className="text-foreground" />
           </button>
           <h1 className="text-lg font-bold text-foreground">Digital Cards</h1>
@@ -44,13 +44,13 @@ const LicenceCard = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="mb-6"
-        >
+          className="mb-6">
+
           <p className="text-xs text-muted-foreground font-medium mb-2 uppercase tracking-wider">
             Driver's Licence (Front)
           </p>
           <div className="rounded-2xl overflow-hidden shadow-xl border border-border">
-            <img src={mockLicenceFront} alt="Driver's Licence Front" className="w-full object-cover" />
+            
           </div>
         </motion.div>
 
@@ -59,8 +59,8 @@ const LicenceCard = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.15 }}
-          className="mb-6"
-        >
+          className="mb-6">
+
           <p className="text-xs text-muted-foreground font-medium mb-2 uppercase tracking-wider">
             Digital Driver's Licence
           </p>
@@ -72,8 +72,8 @@ const LicenceCard = () => {
             issueDate="15/03/2022"
             expiryDate="15/03/2027"
             photo={mockPersonPhoto}
-            status="valid"
-          />
+            status="valid" />
+
         </motion.div>
 
         {/* Digital ID Card */}
@@ -81,8 +81,8 @@ const LicenceCard = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="mb-8"
-        >
+          className="mb-8">
+
           <p className="text-xs text-muted-foreground font-medium mb-2 uppercase tracking-wider">
             Digital Identity Document
           </p>
@@ -93,22 +93,22 @@ const LicenceCard = () => {
             issueDate="20/06/2020"
             expiryDate="20/06/2030"
             photo={mockPersonPhoto}
-            status="valid"
-          />
+            status="valid" />
+
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="flex items-center gap-2 justify-center text-xs text-muted-foreground"
-        >
+          className="flex items-center gap-2 justify-center text-xs text-muted-foreground">
+
           <RotateCw size={12} />
           <span>Last synced: Just now</span>
         </motion.div>
       </div>
-    </AppLayout>
-  );
+    </AppLayout>);
+
 };
 
 export default LicenceCard;
